@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+        integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/style.css">
+    <title>juego</title>
+</head>
+
+<body>
+    <main>
+        <div class="contenedor">
+            <div class="jumbotron">
+                <h1 class="display-4">Juego de la Guayabita</h1>
+                <p class="lead">Este juego se trata de apostar mediante un dado. <br>
+                integrantes <br>
+                -Ginna Daza <br>
+                -Luis Chaparro <br>
+                -Johan Sossa <br>
+                -Deivib Bautista <br>
+                Jhonattan Florez <br>
+                </p>
+                <hr class="my-4">
+                <h2>Reglas del juego</h2>
+                <p>-Si en el primer tiro sacan 1 o 6 pierden,pero si sacan un numero diferente pueden apostar una cantidad deseada
+                <br>En el segundo tiro sacan un valor y vuelven a tirar sacando un numero mayor gana,sino pierde lo apostado
+                <br>-El juego termina cuando el deposito de lo aposado este en 0.
+                <br>
+                <center><a href="#" >
+                  <img class="dado-img" src="https://media.istockphoto.com/photos/red-casino-dice-picture-id1132091114?k=20&m=1132091114&s=612x612&w=0&h=Ik7wjeTsG1YbD4zzRst9Yw-x0s4nAd0KPhL3F5FDG08=" alt="">
+                </a>
+                </p>
+                <a class="btn btn-primary btn-lg btn-iniciar" onclick="ocultar()" ; role="button">Iniciar</a></center>
+
+                <br>
+                <button class="btn btn-success" onclick="sorteo()">Sortear salida</button>
+                <div class="juego">
+                    <h2>Inicio de partida</h2>
+                    <div class="datosJG">
+                        <p></p>
+                        <form>
+                            <input type="text" class="input"  id="inputD">
+                            <button class="btn-ok btn btn-success">OK</button>
+                        </form>
+                        
+
+                    </div>
+                    <div class="dado">
+                        <center>
+                            <img src="./img/dado.gif" width="120px"  >
+                        </center>
+                        
+                    </div>
+                </div>
+            </div>
+            <!--<div class="datos">
+                <p>¿Cuantas personas van a jugar?</p>
+                <input type="text" id="Njugadores" minlength="2" maxlength="5" value="2">
+
+                <button onclick="njugadores();">Enviar</button>
+                <br>
+                <div id="datosJugador">
+                </div>
+                /*
+console.log(Njugadores);
+
+function njugadores(){
+    var Njugadores = document.getElementById('Njugadores').value;
+    console.log(Njugadores)
+
+     if (Njugadores > 5 || Njugadores < 2){
+        alert("ingrese un rango entre 2 y 5");
+
+    }else{
+        datosJugador.innerHTML=" <p>ingrese el valor inicial</p><input type='text'><button onclick=iniciar()>Enviar</button>"
+
+
+    };
+
+
+
+}
+
+function iniciar(){
+
+
+    for (let index = 1; index < Njugadores; index++) {
+        let pa = document.createElement('p');
+        let txtPa = document.createTextNode('ingrese el nombre del jugador '+i);
+        datosJugador.innerHTML= datosJugador.appendChild(pa);
+        pa.appendChild(txtPa);
+
+
+    }
+    /*
+    datosJugador.innerHTML=`<div class="h" >
+    <p>
+        ingrese los nombres de los jugadores
+    </p>
+    <input type="text" id=""><br>
+    <input type="text" id=""><br>
+    <input type="text" id=""><br>
+    <input type="text" id=""><br>
+    <input type="text" id=""><br>
+    <button onclick="sorteo();">guardar</button>
+  </div>`;
+  document.getElementByClassName("h").style.display=block;
+}*/
+            </div>-->
+
+        </div>
+    </main>
+
+
+    <script src="./js/main.js">
+
+    </script>
+</body>
+
+</html>
