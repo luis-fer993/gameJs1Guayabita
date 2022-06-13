@@ -5,7 +5,7 @@ var datosJugador = document.getElementById("datosJugador");
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 }
-
+/*
 function imgdado(ndado) {
   switch (ndado) {
     case 1:
@@ -33,9 +33,8 @@ function imgdado(ndado) {
       strImg = "../img/dado.gif";
       break;
   }
-
   return strImg;
-}
+}*/
 
  function ocultar() {
   botonInicio.style.display = "none";
@@ -49,11 +48,10 @@ function imgdado(ndado) {
   //---
 
   class Person {
-    constructor(n = "jugador", v = 100, total = 0, p = true, g = false) {
+    constructor(n = "jugador", v = 100, total = 0, g = false) {
       this.nombre = n;
       this.valorInicial = v;
       this.valorTotal = total;
-      this.primervez = p;
       this.ganador = g;
     }
   }
@@ -69,14 +67,24 @@ function imgdado(ndado) {
   for (i = 0; i < nj; i++) {
     n = prompt("ingrese el nombre del jugador " + parseInt(i + 1));
     do {
+      var valTo = parseInt(
+        prompt(
+          "Ingrese el valor total de su presupuesto "
+        )
+      );
+    } while (isNaN(valTo));
+
+    do {
       val = parseInt(
         prompt(
-          " ingrese el valor inicial\recuerde que no debe ser menor a $100 "
+          "Ingrese el valor inicial\recuerde que no debe ser menor a $100 "
         )
       );
     } while (isNaN(val) || val < 100);
+    
+    valTo=valTo-val;
 
-    jugadores[i] = new Person(n, val);
+    jugadores[i] = new Person(n, val,valTo);
   }
 
   var total = 0;
@@ -90,25 +98,28 @@ function imgdado(ndado) {
   //var juego = document.getElementByClassName('juego');
 
   sorteo.addEventListener("click", () => {
+    for (let index = 0; index < jugadores.length; index++) {
+      jugadores.shift()
+    }
     if (total <= 0) {
-      alert("Juego terminado 😀");
-
       var btnNueva = document.getElementById("botonNueva");
       btnNueva.style.display = "block";
 
       btnNueva.addEventListener("click", () => {
         btnNueva.style.display = "none";
       });
+
+      alert("Juego terminado 😀");
     } else {
       for (i = 0; i <= jugadores.length - 1; i++) {
         if (!total == 0) {
           console.log(total);
           var resultado = getRandomInt(1, 7);
-          var imgd=imgdado(resultado);
+          //var imgd=imgdado(resultado);
           alert(
             jugadores[i].nombre + " \nSaco el siguiente numero: 🎲 " + resultado
           );
-          if (jugadores[i].primervez && (resultado == 1 || resultado == 6)) {
+          if (resultado == 1 || resultado == 6) {
               do {
                 var valor = parseInt(
                   prompt(
@@ -118,10 +129,10 @@ function imgdado(ndado) {
                       resultado
                   )
                 );
-              } while (isNaN(valor));           
+              } while (isNaN(valor));
+              jugadores[i].valorTotal-=valor;           
 
             total += valor;
-            jugadores[i].primervez = false;
           } else {
               do {
                 valor = parseInt(
@@ -162,6 +173,7 @@ function imgdado(ndado) {
                     title: "Felicitaciones... ",
                     text: "Ganador: " + jugadores[i].nombre,
                     width: 600,
+                    icon: "success",
                     padding: "3em",
                     color: "#716add",
                     background: "#fff url(../img/trees.png)",
@@ -178,15 +190,19 @@ function imgdado(ndado) {
               }
             } else {
               total += valor;
+              jugadores[i].valorTotal-=valor;
               alert(
                 "Usted perdio la apuesta\ntotal deposito: " +
                   total
               );
+              if (jugadores[i].valorTotal<=0) {
+                alert(`Jugador ${jugadores[i].nombre} ha quedado sin fondos\nSera eliminado del juego`);
+                jugadores.splice(i,1);
+              }
             }
           }
         }
 
-        jugadores[i].primervez = false;
       }
     }
   });
