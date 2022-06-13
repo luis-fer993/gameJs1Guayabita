@@ -40,11 +40,11 @@ function imgdado(ndado) {
   botonInicio.style.display = "none";
 
   var jugadores = [];
-
+/*
   for (let index = 0; index < jugadores.length; index++) {
     jugadores.shift()
     
-  }
+  }*/
   //---
 
   class Person {
@@ -62,30 +62,31 @@ function imgdado(ndado) {
     );
   } while (isNaN(nj) || nj > 5 || nj < 2);
 
-
-
   for (i = 0; i < nj; i++) {
     n = prompt("ingrese el nombre del jugador " + parseInt(i + 1));
     do {
       var valTo = parseInt(
         prompt(
-          "Ingrese el valor total de su presupuesto "
+          "Ingrese el valor total de su presupuesto\nRecuerde que debe ser mayor a $300"
         )
       );
-    } while (isNaN(valTo));
+    } while(isNaN(valTo)||(valTo < 300));
 
     do {
-      val = parseInt(
+      var val = parseInt(
         prompt(
-          "Ingrese el valor inicial\recuerde que no debe ser menor a $100 "
+          `Ingrese el valor inicial\nRecuerde que no debe ser menor a $100
+          \nAdemas no puede ser mayor a su presupuesto total y\ndebe tener una diferencia minimo de $100`
         )
       );
-    } while (isNaN(val) || val < 100);
+    } while ((isNaN(val) || val < 100)||(val >valTo-100) );
     
     valTo=valTo-val;
 
     jugadores[i] = new Person(n, val,valTo);
+    
   }
+  console.log(jugadores)
 
   var total = 0;
   for (i = 0; i < jugadores.length; i++) {
@@ -98,10 +99,8 @@ function imgdado(ndado) {
   //var juego = document.getElementByClassName('juego');
 
   sorteo.addEventListener("click", () => {
-    for (let index = 0; index < jugadores.length; index++) {
-      jugadores.shift()
-    }
     if (total <= 0) {
+
       var btnNueva = document.getElementById("botonNueva");
       btnNueva.style.display = "block";
 
@@ -111,7 +110,8 @@ function imgdado(ndado) {
 
       alert("Juego terminado 😀");
     } else {
-      for (i = 0; i <= jugadores.length - 1; i++) {
+      for (i = 0; i <= jugadores.length -1; i++) {
+        console.log('val t'+jugadores[i].nombre+' tiene '+jugadores[i].valorTotal)
         if (!total == 0) {
           console.log(total);
           var resultado = getRandomInt(1, 7);
@@ -130,7 +130,15 @@ function imgdado(ndado) {
                   )
                 );
               } while (isNaN(valor));
+
+              console.log('valor antes: '+jugadores[i].valorTotal)
               jugadores[i].valorTotal-=valor;           
+              console.log('valor des: '+jugadores[i].valorTotal)
+              if (jugadores[i].valorTotal<=0) {
+                alert(`Jugador ${jugadores[i].nombre} ha quedado sin fondos\nSera eliminado del juego`);
+                jugadores.splice(i,1);
+                break;
+              }
 
             total += valor;
           } else {
@@ -147,24 +155,34 @@ function imgdado(ndado) {
             
             var apuesta = getRandomInt(1, 7);
 
-            alert(
+            Swal.fire({
+              title: `Resultados`,
+              text: jugadores[i].nombre +"\nSaco el siguiente numero: 🎲  " +apuesta +"\nNumero anterior: " +resultado,
+              icon: "success",
+              timer: 4000,
+              timerProgressBar: true,
+            });
+            /*alert(
               jugadores[i].nombre +
                 "\nSaco el siguiente numero: 🎲  " +
                 apuesta +
                 "\nNumero anterior: " +
                 resultado
-            );
+            );*/
 
             if (apuesta > resultado) {
               total -= valor;
               //alert("Usted gano la apuesta\nTotal deposito: " + total);
-              Swal.fire({
-                title: `Usted gano la apuesta\nTotal deposito: ` + total,
-                text: "Felicidades",
-                icon: "success",
-                timer: 4000,
-                timerProgressBar: true,
-              });
+              setTimeout(() => {
+                Swal.fire({
+                  title: `Usted gano la apuesta\nTotal deposito: ` + total,
+                  text: "Felicidades",
+                  icon: "success",
+                  timer: 4500,
+                  timerProgressBar: true,
+                });
+              }, 5000);
+              
 
               if (total <= 0) {
                 //alert('Ganador: ' + jugadores[i]);
@@ -176,15 +194,15 @@ function imgdado(ndado) {
                     icon: "success",
                     padding: "3em",
                     color: "#716add",
-                    background: "#fff url(../img/trees.png)",
+                    background: "#fff url(./img/trees.png)",
                     backdrop: `
                       rgba(0,0,123,0.4)
-                      url('../img/nyan-cat.gif')
+                      url('./img/nyan-cat.gif')
                       left top
                       no-repeat
                     `,
                   });
-                }, 5000);
+                }, 10000);
 
                 break;
               }
@@ -198,6 +216,7 @@ function imgdado(ndado) {
               if (jugadores[i].valorTotal<=0) {
                 alert(`Jugador ${jugadores[i].nombre} ha quedado sin fondos\nSera eliminado del juego`);
                 jugadores.splice(i,1);
+                break;
               }
             }
           }
