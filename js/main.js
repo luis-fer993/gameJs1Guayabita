@@ -51,6 +51,7 @@ function imgdado(ndado) {
     constructor(n = "jugador", v = 100, total = 0, g = false) {
       this.nombre = n;
       this.valorInicial = v;
+      this.valorInicioTotal=total;
       this.valorTotal = total;
       this.ganador = g;
     }
@@ -99,130 +100,171 @@ function imgdado(ndado) {
   //var juego = document.getElementByClassName('juego');
 
   sorteo.addEventListener("click", () => {
-    if (total <= 0) {
-
-      var btnNueva = document.getElementById("botonNueva");
+    if (total > 0 && jugadores.length >1 ) {
+        for (i = 0; i <= jugadores.length -1; i++) {
+          console.log('val t'+jugadores[i].nombre+' tiene '+jugadores[i].valorTotal)
+          if (!total == 0) {
+            console.log(total);
+            var resultado = getRandomInt(1, 7);
+            //var imgd=imgdado(resultado);
+            alert(
+              jugadores[i].nombre + " \nSaco el siguiente numero: 🎲 " + resultado
+            );
+            if (resultado == 1 || resultado == 6) {
+                do {
+                  var valor = parseInt(
+                    prompt(
+                      "Usted perdio el primer tiro,ingrese el valor para ingresar\nTotal del deposito: " +
+                        total +
+                        "\nNumero anterior: " +resultado+"\nMi total de Dinero: "+jugadores[i].valorTotal
+                    )
+                  );
+                } while (isNaN(valor));
+  
+                console.log('valor antes: '+jugadores[i].valorTotal)
+                jugadores[i].valorTotal-=valor;           
+                console.log('valor des: '+jugadores[i].valorTotal)
+  
+                total += valor;
+  
+                if (jugadores[i].valorTotal<=0) {
+                  alert(`Jugador ${jugadores[i].nombre} ha quedado sin fondos\nSera eliminado del juego`);
+                  jugadores.splice(i,1);
+                  break;
+                }
+  
+              
+            } else {
+                do {
+                  valor = parseInt(
+                    prompt(
+                      "Usted gano el tiro ingrese un valor para apostar el cual no debe ser mayor al deposito actual: \nTotal deposito:" +
+                        total +
+                      "\nNumero anterior: 🎲  " +resultado+"\nMi total de Dinero: "+jugadores[i].valorTotal
+                    )
+                  );
+                } while (isNaN(valor)||valor>total);
+              
+              var apuesta = getRandomInt(1, 7);
+                  /*
+              Swal.fire({
+                title: `Resultados`,
+                text: jugadores[i].nombre +"\nSaco el siguiente numero: 🎲  " +apuesta +"\nNumero anterior: " +resultado+
+                "\nMi total de Dinero: "+jugadores[i].valorTotal,
+                icon: "info",
+                timer: 4000,
+                timerProgressBar: true,
+              });*/
+              alert(
+                jugadores[i].nombre +
+                  "\nSaco el siguiente numero: 🎲  " +
+                  apuesta +
+                  "\nNumero anterior: " +
+                  resultado
+              );
+  
+              if (apuesta > resultado) {
+                total -= valor;
+                jugadores[i].valorTotal+=valor;   
+                alert("Usted gano la apuesta\nTotal deposito: " + total+"\nMi total de Dinero: "+jugadores[i].valorTotal);/*
+                setTimeout(() => {
+                  Swal.fire({
+                    title: `Usted gano la apuesta\nTotal deposito: ` + total,
+                    text: "Felicidades\nMi total de Dinero: "+jugadores[i].valorTotal,
+                    icon: "success",
+                    timer: 4500,
+                    timerProgressBar: true,
+                  });
+                }, 5000);*/
+                
+  
+                if (total <= 0) {
+                  //alert('Ganador: ' + jugadores[i]);
+                  setTimeout(() => {
+                    Swal.fire({
+                      title: "Felicitaciones... Ganador: " + jugadores[i].nombre,
+                      text: "Gano con un total de: "+jugadores[i].valorTotal,
+                      width: 600,
+                      icon: "success",
+                      padding: "3em",
+                      color: "#716add",
+                      background: "#fff url(./img/trees.png)",
+                      backdrop: `
+                        rgba(0,0,123,0.4)
+                        url('./img/nyan-cat.gif')
+                        left top
+                        no-repeat
+                      `,
+                    });
+                  }, 1000);
+                  var btnNueva = document.getElementById("botonNueva");
+                  btnNueva.style.display = "block";
+            
+                  btnNueva.addEventListener("click", () => {
+                    btnNueva.style.display = "none";
+                  });
+                  break;
+                }
+              } else {
+                total += valor;
+                jugadores[i].valorTotal-=valor;
+                /*setTimeout(() => {
+                  Swal.fire({
+                    title: "Usted perdio la apuesta",
+                    text: "Total deposito: "+total+"\nTotal mis fondos: "+jugadores[i].valorTotal,
+                    width: 600,
+                    icon: "error",
+                    timer: 4500,
+                    timerProgressBar: true,
+                  });
+                }, 10000);*/
+                alert(
+                  "Usted perdio la apuesta\ntotal deposito: " +
+                    total+"\nTotal mis fondos: "+jugadores[i].valorTotal
+                );
+  
+                  if (jugadores[i].valorTotal<=0) {
+                    alert(`Jugador ${jugadores[i].nombre} ha quedado sin fondos\nSera eliminado del juego`);
+                    jugadores.splice(i,1);
+                    break;
+                  }
+                
+              }
+            }
+          }
+  
+        }
+    
+    }else if(jugadores.length < 2){
+      jugadores[0].valorTotal+=total;
+        Swal.fire({
+          title: "Felicitaciones... Ganador: " + jugadores[0].nombre,
+          text: "Gano con un total de: "+jugadores[0].valorTotal ,
+          width: 600,
+          icon: "success",
+          padding: "3em",
+          color: "#716add",
+          background: "#fff url(./img/trees.png)",
+          backdrop: `
+            rgba(0,0,123,0.4)
+            url('./img/nyan-cat.gif')
+            left top
+            no-repeat
+          `,
+        });
+        var btnNueva = document.getElementById("botonNueva");
       btnNueva.style.display = "block";
 
       btnNueva.addEventListener("click", () => {
         btnNueva.style.display = "none";
       });
+    
+    }else {
 
-      alert("Juego terminado 😀");
-    } else {
-      for (i = 0; i <= jugadores.length -1; i++) {
-        console.log('val t'+jugadores[i].nombre+' tiene '+jugadores[i].valorTotal)
-        if (!total == 0) {
-          console.log(total);
-          var resultado = getRandomInt(1, 7);
-          //var imgd=imgdado(resultado);
-          alert(
-            jugadores[i].nombre + " \nSaco el siguiente numero: 🎲 " + resultado
-          );
-          if (resultado == 1 || resultado == 6) {
-              do {
-                var valor = parseInt(
-                  prompt(
-                    "Usted perdio el primer tiro,ingrese el valor apostado\nTotal del deposito: " +
-                      total +
-                      "\nNumero anterior: " +
-                      resultado
-                  )
-                );
-              } while (isNaN(valor));
+      
 
-              console.log('valor antes: '+jugadores[i].valorTotal)
-              jugadores[i].valorTotal-=valor;           
-              console.log('valor des: '+jugadores[i].valorTotal)
-              if (jugadores[i].valorTotal<=0) {
-                alert(`Jugador ${jugadores[i].nombre} ha quedado sin fondos\nSera eliminado del juego`);
-                jugadores.splice(i,1);
-                break;
-              }
+      
 
-            total += valor;
-          } else {
-              do {
-                valor = parseInt(
-                  prompt(
-                    "Usted gano el tiro ingrese un valor para apostar: \nTotal deposito:" +
-                      total +
-                      "\nNumero anterior: 🎲  " +
-                      resultado
-                  )
-                );
-              } while (isNaN(valor));
-            
-            var apuesta = getRandomInt(1, 7);
-
-            Swal.fire({
-              title: `Resultados`,
-              text: jugadores[i].nombre +"\nSaco el siguiente numero: 🎲  " +apuesta +"\nNumero anterior: " +resultado,
-              icon: "success",
-              timer: 4000,
-              timerProgressBar: true,
-            });
-            /*alert(
-              jugadores[i].nombre +
-                "\nSaco el siguiente numero: 🎲  " +
-                apuesta +
-                "\nNumero anterior: " +
-                resultado
-            );*/
-
-            if (apuesta > resultado) {
-              total -= valor;
-              //alert("Usted gano la apuesta\nTotal deposito: " + total);
-              setTimeout(() => {
-                Swal.fire({
-                  title: `Usted gano la apuesta\nTotal deposito: ` + total,
-                  text: "Felicidades",
-                  icon: "success",
-                  timer: 4500,
-                  timerProgressBar: true,
-                });
-              }, 5000);
-              
-
-              if (total <= 0) {
-                //alert('Ganador: ' + jugadores[i]);
-                setTimeout(() => {
-                  Swal.fire({
-                    title: "Felicitaciones... ",
-                    text: "Ganador: " + jugadores[i].nombre,
-                    width: 600,
-                    icon: "success",
-                    padding: "3em",
-                    color: "#716add",
-                    background: "#fff url(./img/trees.png)",
-                    backdrop: `
-                      rgba(0,0,123,0.4)
-                      url('./img/nyan-cat.gif')
-                      left top
-                      no-repeat
-                    `,
-                  });
-                }, 10000);
-
-                break;
-              }
-            } else {
-              total += valor;
-              jugadores[i].valorTotal-=valor;
-              alert(
-                "Usted perdio la apuesta\ntotal deposito: " +
-                  total
-              );
-              if (jugadores[i].valorTotal<=0) {
-                alert(`Jugador ${jugadores[i].nombre} ha quedado sin fondos\nSera eliminado del juego`);
-                jugadores.splice(i,1);
-                break;
-              }
-            }
-          }
-        }
-
-      }
     }
   });
 }
